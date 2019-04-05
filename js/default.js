@@ -90,7 +90,7 @@ function loop()
 		}
 		if (keys.q)
 		{
-			Grid.addViaReceiver("up");
+			//Grid.addViaReceiver("up");
 		}		
 	}
 	else
@@ -125,7 +125,7 @@ function loop()
 		}
 		if (keys.q)
 		{
-			Grid.addVia("up");
+			//Grid.addVia("up");
 		}		
 	}
 	if (keys.escape)

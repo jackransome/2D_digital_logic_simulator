@@ -4,11 +4,8 @@ Controls:
 
 SHIFT: move 2 cells at a time
 
-SHIFT Z: add via reciever down
-SHIFT Q: add via reciever up
-
-Z: add via down
-Q: add via up
+Z: add via
+SHIFT Z: add via reciever
 
 WASD: navigate grid
 
@@ -44,3 +41,5 @@ Vias take input from all adjacent cells on the layer that are on and output to t
 Via recievers take input input from a via either one layer above or one layer below depending on the type of via and reciever and output to all adjacent cells
 
 AND and OR gates take input from the left and right cells and output to the cell above
+
+![alt text](https://raw.githubusercontent.com/jackransome/2D_digital_logic_simulator/tree/master/readme_images/1.png)
