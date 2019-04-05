@@ -31,8 +31,6 @@ T: add Diode
 
 MOUSE LEFT CLICK: add wire where the cursor is
 
-B: update grid
-
 Inputs and outputs for components:
 
 Diodes and Inverters take input from the cell below and output to the cell above
