@@ -42,7 +42,12 @@ Via recievers take input input from a via either one layer above or one layer be
 
 AND and OR gates take input from the left and right cells and output to the cell above
 
+Left to right: inverter, AND gate, OR gate, XOR gate, DIODE, then the same with different input values
+![image 1](/readme_images/6.png)
+
+
 A simple binary adder that adds 2 2 bit numbers to get a 3 bit number:
+
 Top Layer:
 ![image 1](/readme_images/2.png)
 
