@@ -34,7 +34,7 @@ function grid(_width, _height, _depth)
 			}
 			else
 			{
-				this.drawAlpha = 0.3;
+				this.drawAlpha = 0.3;//(1 / abs(k-this.cellSelected.z))*1;
 			}
 			for (i = 0; i < this.width; i++)
 			{
@@ -132,7 +132,7 @@ function grid(_width, _height, _depth)
 		for (i = 0; i < this.depth; i++)
 		{
 			ctx.fillStyle = "rgba(180, 180, 180, 1)";
-			if (this.cellSelected.z == i)
+			if (this.cellSelected.z == i)dssss
 			{
 				ctx.fillStyle = "rgba(250, 250, 250, 1)";
 			}
@@ -150,12 +150,12 @@ function grid(_width, _height, _depth)
 				{
 					if (this.array[i][j][k].type == "wire")
 					{
-						//this.array[i][j][k].state = 0;
+						this.array[i][j][k].state = 0;
 					}
 				}
 			}
 		}
-		for (l = 0; l < 1; l++)
+		for (l = 0; l < 2; l++)
 		{
 			for (k = 0; k < this.depth; k++)
 			{
@@ -385,23 +385,31 @@ function grid(_width, _height, _depth)
 		if (this.array[a][b + 1][c].type == "wire" && this.array[a][b + 1][c].state == 1)  
 		{	
 			temp = 1
+			console.log("wtf");
 		}
 		if (this.array[a][b - 1][c].type == "wire" && this.array[a][b - 1][c].state == 1)  
 		{	
 			temp = 1
+			console.log("wtf");
 		}
 		if (this.array[a + 1][b][c].type == "wire" && this.array[a + 1][b][c].state == 1)  
 		{	
 			temp = 1
+			console.log("wtf");
 		}
 		if (this.array[a - 1][b][c].type == "wire" && this.array[a - 1][b][c].state == 1)  
 		{	
 			temp = 1
+			console.log("wtf");
 		}
+		console.log(this.array[a - 1][b][c].type);
+		console.log(this.array[a - 1][b][c].state);
 			if (this.array[a][b][c].state == 1 && temp == 1)
 			{
+				console.log("wtf");
 				if (this.array[a][b][c].direction == "down" && this.array[a][b][c+1].type == "viaReceiver")
 				{
+					console.log("wtf");
 					this.array[a][b][c+1].state = 1;
 					this.checkIfNextTo(a, b, c + 1);
 				}
@@ -424,6 +432,7 @@ function grid(_width, _height, _depth)
 			}
 		if (temp == 1)
 		{
+			console.log("wtf2");
 			this.array[a][b][c].state = 1;			
 		}
 	}

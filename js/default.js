@@ -64,6 +64,7 @@ setInterval(loop, 100);
 var bLatch = false;
 function loop()
 {
+	Grid.update();
 	if (keys.shift)
 	{
 		if (keys.w && Grid.cellSelected.y > 0)
@@ -83,14 +84,14 @@ function loop()
 			Grid.cellSelected.x+=2;
 			
 		}
-	if (keys.z)
-	{
-		Grid.addViaReceiver("down");
-	}
-	if (keys.q)
-	{
-		Grid.addViaReceiver("up");
-	}		
+		if (keys.z)
+		{
+			Grid.addViaReceiver("down");
+		}
+		if (keys.q)
+		{
+			Grid.addViaReceiver("up");
+		}		
 	}
 	else
 	{
