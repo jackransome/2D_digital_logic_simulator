@@ -1,6 +1,6 @@
-# 2D_digital_logic_simulator
+## 2D digital logic simulator
 
-Controls:
+#Controls:
 
 SHIFT: move 2 cells at a time
 
@@ -30,7 +30,7 @@ T: add Diode
 
 MOUSE LEFT CLICK: add wire where the cursor is
 
-Inputs and outputs for components:
+#Inputs and outputs for components:
 
 Diodes and Inverters take input from the cell below and output to the cell above
 
@@ -42,9 +42,11 @@ Via recievers take input input from a via either one layer above or one layer be
 
 AND and OR gates take input from the left and right cells and output to the cell above
 
-Left to right: inverter, AND gate, OR gate, XOR gate, DIODE, then the same with different input values
-![image 1](/readme_images/6.png)
+#Images
 
+Left to right: inverter, AND gate, OR gate, XOR gate, DIODE, then the same with different input values
+
+![image 1](/readme_images/6.png)
 
 A simple binary adder that adds 2 2 bit numbers to get a 3 bit number:
 
