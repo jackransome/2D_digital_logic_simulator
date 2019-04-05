@@ -48,7 +48,7 @@ Left to right: inverter, AND gate, OR gate, XOR gate, DIODE, then the same with 
 
 A simple binary adder that adds 2 2 bit numbers to get a 3 bit number:
 
-Top Layer
+Top Layer:\n
 ![image 1](/readme_images/2.png)
 
 Lower Layer, showing use of vias
