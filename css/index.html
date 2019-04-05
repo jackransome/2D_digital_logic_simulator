@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>css test</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<div class = "container">
+<div class = "login-box">
+<img src="logo.png" alt="logo" style="width:136px;height:157px;">
+<br><br>
+<input type="text" name="username" id="login-username" class="bigbox autofocus" placeholder="Username" style="background-image: none; background-position: 0% 0%; background-repeat: repeat;" tabindex="0"><br>
+<br>
+<input type="password" name="password" id="login-password" class="bigbox" placeholder="Password" style="background-image: none; background-position: 0% 0%; background-repeat: repeat;" tabindex="0"><br>
+<input id="login-button" type="button" value="Sign in" onclick="logIn();" />
+<script>
+function logIn()
+{
+	if (document.getElementById("login-username").value == "rip" && document.getElementById("login-password").value == "erino")
+	{
+	console.log("yay");
+	}
+}
+</script>
+<br>
+<button>Forgot Password?</button>
+<br>
+</body>
+</html>
+
+
+
