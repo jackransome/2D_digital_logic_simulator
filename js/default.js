@@ -58,7 +58,7 @@ function cell(_type)
 }
 
 //---------/VARIABLES----------//
-Grid = new grid(100, 100, 4)
+Grid = new grid(80, 80, 4)
 Grid.fill();
 setInterval(loop, 100);
 var bLatch = false;

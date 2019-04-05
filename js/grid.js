@@ -3,7 +3,7 @@ function grid(_width, _height, _depth) {
 	this.width = _width;
 	this.height = _height;
 	this.depth = _depth;
-	this.cellSize = 8;
+	this.cellSize = 12;
 	this.cellSelected = { x: 0, y: 0, z: 0 }
 	this.temp = 0;
 	this.drawAlpha = 0;
