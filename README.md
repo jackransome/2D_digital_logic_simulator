@@ -42,4 +42,4 @@ Via recievers take input input from a via either one layer above or one layer be
 
 AND and OR gates take input from the left and right cells and output to the cell above
 
-![alt text](https://raw.githubusercontent.com/jackransome/2D_digital_logic_simulator/tree/master/readme_images/1.png)
+![image 1](/readme_images/1.png)
