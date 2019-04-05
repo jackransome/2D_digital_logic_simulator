@@ -156,6 +156,10 @@ function loop()
 	{
 		Grid.addOr();
 	}
+	if (keys.b)
+	{
+		Grid.addXor();
+	}
 	if (keys.t)
 	{
 		Grid.addDiode();

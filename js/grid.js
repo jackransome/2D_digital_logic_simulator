@@ -135,6 +135,10 @@ function grid(_width, _height, _depth)
 							ctx.fillStyle = "rgba(100, 255, 100, " + this.drawAlpha + ")";
 							ctx.fillRect(i*this.cellSize, j*this.cellSize, this.cellSize, this.cellSize);
 							break;
+						case "xor":
+							ctx.fillStyle = "rgba(250, 100, 100, " + this.drawAlpha + ")";
+							ctx.fillRect(i*this.cellSize, j*this.cellSize, this.cellSize, this.cellSize);
+							break;
 						case "diode":
 							ctx.fillStyle = "rgba(190, 210, 245, " + this.drawAlpha + ")";
 							ctx.fillRect(i*this.cellSize, j*this.cellSize, this.cellSize, this.cellSize);
@@ -167,6 +171,52 @@ function grid(_width, _height, _depth)
 	}
 	this.update = function()
 	{
+		//evaluating component values
+		for (l = 0; l < 1; l++)
+		{
+			for (k = 0; k < this.depth; k++)
+			{
+				for (i = 0; i < this.width; i++)
+				{
+					for (j = 0; j < this.height; j++)
+					{
+						if (this.array[i][j][k].type == "inverter")
+						{
+							this.inverterCheck(i,j,k);
+						}
+						if (this.array[i][j][k].type == "via")
+						{
+							this.viaCheck(i,j,k);
+						}
+						if (this.array[i][j][k].type == "viaReceiver")
+						{
+							//this.viaReceiverCheck(i,j,k);
+						}
+						if (this.array[i][j][k].type == "source")
+						{
+							//this.sourceCheck(i,j,k);
+						}
+						if (this.array[i][j][k].type == "and")
+						{
+							this.andCheck(i,j,k);
+						}
+						if (this.array[i][j][k].type == "or")
+						{
+							this.orCheck(i,j,k);
+						}
+						if (this.array[i][j][k].type == "xor")
+						{
+							this.xorCheck(i,j,k);
+						}
+						if (this.array[i][j][k].type == "diode")
+						{
+							this.diodeCheck(i,j,k);
+						}
+					}
+				}
+			}
+		}	
+		//resetting all wires states to 0
  		for (k = 0; k < this.depth; k++)
 		{
 			for (i = 0; i < this.width; i++)
@@ -179,49 +229,51 @@ function grid(_width, _height, _depth)
 					}
 				}
 			}
-		}
-		for (l = 0; l < 2; l++)
+		}				
+		//propogate all signals from components
+		for (k = 0; k < this.depth; k++)
 		{
-			for (k = 0; k < this.depth; k++)
+			for (i = 0; i < this.width; i++)
 			{
-				for (i = 0; i < this.width; i++)
+				for (j = 0; j < this.height; j++)
 				{
-					for (j = 0; j < this.height; j++)
+					if (this.array[i][j][k].type == "inverter")
 					{
-
-						if (this.array[i][j][k].type == "inverter")
-						{
-							this.inverterCheck(i,j,k);
-						}
-						if (this.array[i][j][k].type == "via")
-						{
-							this.viaCheck(i,j,k);
-						}
-						if (this.array[i][j][k].type == "viaReceiver")
-						{
-							this.viaReceiverCheck(i,j,k);
-						}
-						if (this.array[i][j][k].type == "source")
-						{
-							this.sourceCheck(i,j,k);
-						}
-						if (this.array[i][j][k].type == "and")
-						{
-							this.andCheck(i,j,k);
-						}
-						if (this.array[i][j][k].type == "or")
-						{
-							this.orCheck(i,j,k);
-						}
-						if (this.array[i][j][k].type == "diode")
-						{
-							this.diodeCheck(i,j,k);
-						}
+						this.inverterPropagate(i,j,k);
+					}
+					if (this.array[i][j][k].type == "via")
+					{
+						this.viaPropagate(i,j,k);
+					}
+					if (this.array[i][j][k].type == "viaReceiver")
+					{
+						this.viaReceiverPropagate(i,j,k);
+					}
+					if (this.array[i][j][k].type == "source")
+					{
+						this.sourcePropagate(i,j,k);
+					}
+					if (this.array[i][j][k].type == "and")
+					{
+						this.andPropagate(i,j,k);
+					}
+					if (this.array[i][j][k].type == "or")
+					{
+						this.orPropagate(i,j,k);
+					}
+					if (this.array[i][j][k].type == "xor")
+					{
+						this.xorPropagate(i,j,k);
+					}
+					if (this.array[i][j][k].type == "diode")
+					{
+						this.diodePropagate(i,j,k);
 					}
 				}
 			}
-		}				
+		}
 	}
+
 	this.checkIfNextTo = function(a, b, c)
 	{
 		if (this.array[a][b][c].state == 1)
@@ -277,15 +329,20 @@ function grid(_width, _height, _depth)
 		}
 		else
 		{
-			if (this.array[a][b][c].state == 1 && this.array[a][b - 1][c].type == "wire")
-			{
-			 this.array[a][b - 1][c].state = 1;
-			 this.checkIfNextTo(a, b-1, c);
-			}
 			this.array[a][b][c].state = 1;
 		}
 	}
-	this.sourceCheck = function(a, b, c)
+	this.inverterPropagate = function(a, b, c)
+	{
+
+		if (this.array[a][b][c].state == 1 && this.array[a][b - 1][c].type == "wire")
+		{
+			 this.array[a][b - 1][c].state = 1;
+			 this.checkIfNextTo(a, b-1, c);
+		}
+
+	}
+	this.sourcePropagate = function(a, b, c)
 	{
 		if (this.array[a][b + 1][c].type == "wire")  
 		{	
@@ -310,75 +367,66 @@ function grid(_width, _height, _depth)
 	}
 	this.andCheck = function(a, b, c)
 	{
-		if (this.array[a][b][c].state == 2)
-		{
-			this.array[a][b-1][c].state = 1;
-			this.checkIfNextTo(a, b-1, c);
-		}
 		if (this.array[a - 1][b][c].type == "wire" && this.array[a-1][b][c].state == 1 &&  this.array[a + 1][b][c].type == "wire" && this.array[a+1][b][c].state == 1)
 		{
-			if (this.array[a][b][c].state > 0 && this.array[a][b - 1][c].type == "wire")
-			{
-				if (this.array[a][b - 1][c].type == "wire")  
-				{	
-					this.array[a][b][c].state = 2;
-				}
-			}
-			if (this.array[a][b][c].state == 0)
-			{
 			this.array[a][b][c].state = 1;
-			}
 		}
 		else
 		{
 			this.array[a][b][c].state = 0;
 		}
 	}
-	this.orCheck = function(a, b, c)
+	this.andPropagate = function(a, b, c)
 	{
-		if (this.array[a][b][c].state == 2)
+		if (this.array[a][b][c].state == 1)
 		{
 			this.array[a][b-1][c].state = 1;
 			this.checkIfNextTo(a, b-1, c);
 		}
-		if (this.array[a - 1][b][c].type == "wire" && this.array[a-1][b][c].state == 1 &&  this.array[a + 1][b][c].type == "wire" && this.array[a+1][b][c].state == 0)
+	}
+	this.orCheck = function(a, b, c)
+	{
+		if (this.array[a - 1][b][c].type == "wire" && this.array[a-1][b][c].state == 1 || this.array[a + 1][b][c].type == "wire" && this.array[a+1][b][c].state == 1)
 		{
-			if (this.array[a][b][c].state > 0 && this.array[a][b - 1][c].type == "wire")
-			{
-				if (this.array[a][b - 1][c].type == "wire")  
-				{	
-					this.array[a][b][c].state = 2;
-				}
-			}
-			if (this.array[a][b][c].state == 0)
-			{
 			this.array[a][b][c].state = 1;
-			}
 		}
 		else
 		{
-			if (this.array[a - 1][b][c].type == "wire" && this.array[a-1][b][c].state == 0 &&  this.array[a + 1][b][c].type == "wire" && this.array[a+1][b][c].state == 1)
-			{
-				if (this.array[a][b][c].state > 0 && this.array[a][b - 1][c].type == "wire")
-				{
-					if (this.array[a][b - 1][c].type == "wire")  
-					{	
-						this.array[a][b][c].state = 2;
-					}
-				}
-				if (this.array[a][b][c].state == 0)
-				{
-				this.array[a][b][c].state = 1;
-				}				
-			}
-			else
-			{
-				this.array[a][b][c].state = 0;				
-			}
-
+			this.array[a][b][c].state = 0;
 		}
 	}
-	this.viaReceiverCheck = function(a, b, c)
+	this.orPropagate = function(a, b, c)
+	{
+		if (this.array[a][b][c].state == 1)
+		{
+			this.array[a][b-1][c].state = 1;
+			this.checkIfNextTo(a, b-1, c);
+		}
+	}
+	this.xorCheck = function(a, b, c)
+	{
+		if (this.array[a - 1][b][c].type == "wire" && this.array[a-1][b][c].state == 1 || this.array[a + 1][b][c].type == "wire" && this.array[a+1][b][c].state == 1)
+		{
+			this.array[a][b][c].state = 1;
+		}
+		else
+		{
+			this.array[a][b][c].state = 0;
+		}
+		if (this.array[a - 1][b][c].type == "wire" && this.array[a-1][b][c].state == 1 &&  this.array[a + 1][b][c].type == "wire" && this.array[a+1][b][c].state == 1){
+			this.array[a][b][c].state = 0;
+		}
+	}
+	this.xorPropagate = function(a, b, c)
+	{
+
+		if (this.array[a][b][c].state == 1)
+		{
+			this.array[a][b-1][c].state = 1;
+			this.checkIfNextTo(a, b-1, c);
+		}
+	}
+	this.viaReceiverPropagate = function(a, b, c)
 	{
 		if (this.array[a][b][c].state == 1)
 		{
@@ -406,68 +454,53 @@ function grid(_width, _height, _depth)
 	}
 	this.viaCheck = function(a, b, c)
 	{
-		var temp = 0;
 		if (this.array[a][b + 1][c].type == "wire" && this.array[a][b + 1][c].state == 1)  
 		{	
-			temp = 1
-			console.log("wtf");
+			this.array[a][b][c].state = 1;
 		}
 		if (this.array[a][b - 1][c].type == "wire" && this.array[a][b - 1][c].state == 1)  
 		{	
-			temp = 1
-			console.log("wtf");
+			this.array[a][b][c].state = 1;
 		}
 		if (this.array[a + 1][b][c].type == "wire" && this.array[a + 1][b][c].state == 1)  
 		{	
-			temp = 1
-			console.log("wtf");
+			this.array[a][b][c].state = 1;
 		}
 		if (this.array[a - 1][b][c].type == "wire" && this.array[a - 1][b][c].state == 1)  
 		{	
-			temp = 1
-			console.log("wtf");
+			this.array[a][b][c].state = 1;
 		}
-		console.log(this.array[a - 1][b][c].type);
-		console.log(this.array[a - 1][b][c].state);
-			if (this.array[a][b][c].state == 1 && temp == 1)
-			{
-				console.log("wtf");
-				if (this.array[a][b][c].direction == "down" && this.array[a][b][c+1].type == "viaReceiver")
-				{
-					console.log("wtf");
-					this.array[a][b][c+1].state = 1;
-					this.checkIfNextTo(a, b, c + 1);
-				}
-				if (this.array[a][b][c].direction == "up" && this.array[a][b][c-1].type == "viaReceiver")
-				{
-					this.array[a][b][c-1].state = 1;
-					this.checkIfNextTo(a, b, c - 1);					
-				}
-			}
-			else
-			{
-				if (this.array[a][b][c].direction == "down" && this.array[a][b][c+1].type == "viaReceiver")
-				{
-					this.array[a][b][c+1].state = 0;
-				}
-				if (this.array[a][b][c].direction == "up" && this.array[a][b][c-1].type == "viaReceiver")
-				{
-					this.array[a][b][c-1].state = 0;
-				}
-			}
-		if (temp == 1)
+	}
+	this.viaPropagate= function(a, b, c)
+	{
+
+		if (this.array[a][b][c].state == 1)
 		{
-			console.log("wtf2");
-			this.array[a][b][c].state = 1;			
+			if (this.array[a][b][c].direction == "down" && this.array[a][b][c+1].type == "viaReceiver")
+			{
+				this.array[a][b][c+1].state = 1;
+				this.checkIfNextTo(a, b, c + 1);
+			}
+			if (this.array[a][b][c].direction == "up" && this.array[a][b][c-1].type == "viaReceiver")
+			{
+				this.array[a][b][c-1].state = 1;
+				this.checkIfNextTo(a, b, c - 1);					
+			}
+		}
+		else
+		{
+			if (this.array[a][b][c].direction == "down" && this.array[a][b][c+1].type == "viaReceiver")
+			{
+				this.array[a][b][c+1].state = 0;
+			}
+			if (this.array[a][b][c].direction == "up" && this.array[a][b][c-1].type == "viaReceiver")
+			{
+				this.array[a][b][c-1].state = 0;
+			}
 		}
 	}
 	this.diodeCheck = function(a, b, c)
 	{
-		if (this.array[a][b][c].state == 1 && this.array[a][b - 1][c].type == "wire")
-		{
-			this.array[a][b - 1][c].state = 1;
-			this.checkIfNextTo(a, b-1, c);
-		}
 		if (this.array[a][b + 1][c].type == "wire" && this.array[a][b + 1][c].state == 1) 
 		{
 			this.array[a][b][c].state = 1;
@@ -477,6 +510,14 @@ function grid(_width, _height, _depth)
 			this.array[a][b][c].state = 0;
 		}
 		
+	}
+	this.diodePropagate = function(a, b, c)
+	{
+		if (this.array[a][b][c].state == 1 && this.array[a][b - 1][c].type == "wire")
+		{
+			this.array[a][b - 1][c].state = 1;
+			this.checkIfNextTo(a, b-1, c);
+		}		
 	}
 	this.addInverter = function()
 	{
@@ -512,6 +553,10 @@ function grid(_width, _height, _depth)
 	this.addOr = function()
 	{
 		this.array[this.cellSelected.x][this.cellSelected.y][this.cellSelected.z].type = "or";
+	}
+	this.addXor = function()
+	{
+		this.array[this.cellSelected.x][this.cellSelected.y][this.cellSelected.z].type = "xor";
 	}
 	this.deleteCell = function()
 	{

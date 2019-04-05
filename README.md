@@ -25,7 +25,9 @@ F: add power source
 
 C: add AND gate
 
-v: add OR gate
+V: add OR gate
+
+B: add OR gate
 
 T: add Diode
 
