@@ -158,7 +158,7 @@ function loop()
 	}
 	if (keys.t)
 	{
-		Grid.addRepeater();
+		Grid.addDiode();
 	}
 	if (keys.mouseLeft)
 	{
