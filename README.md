@@ -24,7 +24,7 @@ C: add AND gate
 
 V: add OR gate
 
-B: add OR gate
+B: add XOR gate
 
 T: add Diode
 
